@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="CONSOLE_LOG_PATTERN" value="[%d{dd/MM/yyyy HH:mm:ss}] %.-5level | thread: %thread | %logger{0}.%replace(%method){'(.+)', '$1()'} | %L | %msg%n"/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <variable resource="application.properties" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>
