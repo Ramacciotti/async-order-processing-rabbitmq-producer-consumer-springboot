@@ -1,0 +1,23 @@
+services:
+  async-app:
+    build: .  # Builda a imagem Docker a partir do Dockerfile no diretório atual
+    ports:
+      - "8080:8080"  # Expõe a porta 8080 do container para a mesma porta na máquina host
+    depends_on:
+      - rabbitmq # Garante que o container RabbitMQ seja iniciado antes
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq # Define variável de ambiente para a app se conectar ao RabbitMQ via nome do serviço
+    networks:
+      - async-network  # Usa a rede definida abaixo para comunicação entre containers
+
+  rabbitmq:
+    image: rabbitmq:3.9-management  # Usa a imagem oficial do RabbitMQ com painel de gerenciamento
+    ports:
+      - "5672:5672" # Porta padrão do RabbitMQ para comunicação da aplicação
+      - "15672:15672" # Porta do painel web do RabbitMQ para monitoramento
+    networks:
+      - async-network  # Mesma rede para comunicação com o async-app
+
+networks:
+  async-network:
+    driver: bridge # Rede tipo bridge padrão do Docker para isolar a comunicação dos containers
