@@ -13,11 +13,9 @@ import org.springframework.stereotype.Service;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderProducer orderProducer;
-    private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(OrderProducer orderProducer, OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderProducer orderProducer) {
         this.orderProducer = orderProducer;
-        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -26,11 +24,8 @@ public class OrderServiceImpl implements OrderService {
         order.setProduct(orderDTO.getProduct());
         order.setQuantity(orderDTO.getQuantity());
 
-        order = orderRepository.save(order);
-        log.info("Processing new order: {}", order);
-
         orderProducer.sendOrder(order);
-        log.info("Order sent to queue successfully with ID: {}", order.getId());
+        log.info("Order sent to queue successfully: {}", order);
 
         return order.getId();
     }
